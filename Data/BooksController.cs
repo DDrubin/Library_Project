@@ -11,7 +11,7 @@ using System;
 using System.Security.Claims;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
-
+// https://www.googleapis.com/books/v1/volumes?q=Subject:ART&key=AIzaSyBaSYsg_m-ZiP0HzGaezNy6UBq6Hc8GsvM
 namespace Library
 {// TODO: work around security, roles, views. Make view more adaptible
     public class BooksController : Controller
@@ -29,7 +29,9 @@ namespace Library
         // GET: Books 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Books.ToListAsync());
+            var mc = new GoogleBookApiService();
+            mc.Search(0);
+            return View(mc.Search(0));
         }
         // TODO: make Registered view with description from another model like in Book/Register view
         // GET: Registered books for user
@@ -43,7 +45,7 @@ namespace Library
        
         // GET: Books/Register
         [Authorize]
-        public async Task<IActionResult> Register(int? id)
+        public async Task<IActionResult> Register(string id)
         {
 
             if (id == null)
@@ -95,7 +97,7 @@ namespace Library
 
 
         // Books/Details
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -136,7 +138,7 @@ namespace Library
 
         // GET: Books/Edit/5
         [Authorize]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -156,7 +158,7 @@ namespace Library
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Author,PublishDate,Description")] Book book)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Author,PublishDate,Description")] Book book)
         {
             if (id != book.Id)
             {
@@ -188,7 +190,7 @@ namespace Library
 
         // GET: Books/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -209,7 +211,7 @@ namespace Library
         [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var book = await _context.Books.FindAsync(id);
             _context.Books.Remove(book);
@@ -217,7 +219,7 @@ namespace Library
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookExists(int id)
+        private bool BookExists(string id)
         {
             return _context.Books.Any(e => e.Id == id);
         }

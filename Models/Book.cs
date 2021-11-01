@@ -9,7 +9,7 @@ namespace Library.Models
 {
     public class Book
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
 
         public string Author { get; set; }
@@ -17,6 +17,8 @@ namespace Library.Models
         [Display(Name = "Release Date")]
         [DataType(DataType.Date)]
         public DateTime PublishDate { get; set; }
+
+        public string PublishedDate { get; set; }
 
         public string Description { get; set; }
     }
