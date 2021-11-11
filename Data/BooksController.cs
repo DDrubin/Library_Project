@@ -25,12 +25,17 @@ namespace Library
             _context = context;
         }
 
+        // TODO: make default index of list with small number of user added books
+        // TODO: make links to views with googleApi and local DB
+        // TODO: make registration avaliable for googleApi   11/11/2021
 
         // GET: Books 
         public async Task<IActionResult> Index()
         {
             var mc = new GoogleBookApiService();
-            mc.Search(0);
+           // var book = await _context.Books.ToListAsync();
+          //  var googleApi = mc.Search(0);
+           // var tuple = new Tuple<List<Models.Book>, List<Models.Book>>(book, googleApi);
             return View(mc.Search(0));
         }
         // TODO: make Registered view with description from another model like in Book/Register view
